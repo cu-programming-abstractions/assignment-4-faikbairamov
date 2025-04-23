@@ -2,21 +2,30 @@
 using namespace std;
 
 Optional<Set<int>> makeTarget(const Set<int>& elems, int target) {
-    /* TODO: Delete this comment and the next few lines, then implement this
-     * function.
-     */
-    (void) elems;
-    (void) target;
+    if (target == 0) return {};
+
+    if (elems.isEmpty()) return Nothing;
+
+    int first = elems.first();
+    Set<int> rest = elems;
+    rest.remove(first);
+
+    Optional<Set<int>> with = makeTarget(rest, target - first);
+    if (with != Nothing) {
+        with.value().add(first);
+        return with;
+    }
+
+    Optional<Set<int>> without = makeTarget(rest, target);
+    if (without != Nothing) {
+        return without;
+    }
+
     return Nothing;
 }
 
 /* * * * * Test Cases Below This Point * * * * */
 #include "GUI/SimpleTest.h"
-
-/* TODO: Add at least one custom test here, then delete this comment. */
-
-
-
 
 /* * * * * Provided Tests Below This Point * * * * */
 PROVIDED_TEST("Works for an empty set of numbers.") {
